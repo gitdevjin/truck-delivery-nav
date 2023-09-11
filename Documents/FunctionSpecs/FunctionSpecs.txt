@@ -1,0 +1,115 @@
+Developer: Hyunjin Shin
+E-mail: hshin41@myseneca.ca
+
+1. readShipInfo();
+* @param trks[] - available trks, based on which we validate the user input.
+* @param map - based on which, the validation of input is decided.
+* @param storage - the Depot to add shipments to
+* @returns a copy of shipment information from user.
+----ProtoType:
+struct Shipment readShipInfo(struct Truck trks[], struct Map* map ,struct Depot* storage);
+
+----Functionality of this Function:
+Prompt the user to enter shipment information and
+check the validation of input, if not valid it will keep prompting the user until it receives
+the valid input. If There is no available truck, the shipment information will be stored in a storage(third parameter)
+and will return a shipment a member of which will have -1 value to indicate it is invalid shipment.
+If user enter data entry that exits the program, it will also return a shipment with -1 value for a member.
+
+----error condition:
+It will not validate the destinations where the buliding exists.
+Therefore, if the user enter that destination, it could probably have error.
+
+----preconditions:
+It requires proper Map and truck Array as an argument,
+It could possibly cause error with invalid Map and truck Array.
+
+
+
+2. getSuitableTruck();
+* @param trks[] - All the trucks among which, we find the best one.
+* @param package - the shipment information.
+* @returns truckID.
+----ProtoType:
+int getSuitableTruck(struct Truck trks[], struct Shipment* package);
+
+----Functionality of this Function:
+This function will find the most sutiable truck for the shipment
+based on their weight and size availability, and distance to the destination
+the truck id means:
+0 == Bluetruck
+1 == Greentruck
+2 == Yellowtruck
+If there is no suitable truck, it will return -1
+
+----error condition:
+Since it will use structures containing arrays, this function could be prone to index violation error or corruption.
+
+----preconditions:
+This function highly depends on its arguments' validity. If wrong arguments are given,
+It probably cause an error.
+
+
+3. loadShipmentToTruck();
+* @param trks[] - available trks, based on which we add a shipment
+* @param package - to add to a truck
+* @param truckID - indicates which truck we will add a shipment to
+----ProtoType:
+void loadShipmentToTruck(struct Truck trks[], struct Shipment* package, int truckId);
+
+----Functionality of this Function:
+This function adds shipment size and weight to a truck,
+and assign to package a truck that will deliver it.
+It receives shipment information and store it into a truck array, at the same time
+The shipment will have an truckID.
+
+----error condition:
+This functions is just to assgin values to an array and a structure.
+It is less likely to cause errors.
+
+----preconditions:
+This function is very straightforward, it doesn't require a strict precondition.
+
+
+4. showMapAndRoute()
+* @param basemap - a map to add routes
+* @param package - diversion of which will be added to a map
+* @param truckID - indicates which truck we will add a shipment to
+----ProtoType:
+void showMapAndRoute(struct Map* basemap, struct Shipment* package, int truckId);
+
+----Functionality of this Function:
+This function will add a truck route and diversion route to a map and print it.
+This will receive a map and a shipment and then figure out the shortest path from a route based on
+the truckID. Once it is done, the diversion route will be assigned to the shipment and then
+it will add the diversion route onto the map, and then it will display the map on the screen.
+It doesn't reutrn any value.
+
+----error condition:
+If a incorrect turckID is received, it will probaly cause an error.
+
+----preconditions:
+This function depends on many other subfunctions. For this function to work properly,
+through unit tests for those subfunctions are required.
+
+
+5. displayShipmentInfo()
+* @param package - diversion of which will be printed on output stream
+----ProtoType:
+void displayShipmentInfo(struct Shipment* package);
+
+----Functionality of this Function:
+It will print a diversion route of a package as texts.
+It receive a shipment and loop through the shipment destination and change the number value
+into a coordinates that is human-readable.(e.g 6U 6V 6X 6Y)
+This function does not return a value;
+
+----error condition:
+Since this function loops through a shipment's diversion route array,
+If the number of points and the actual number of points shouldn't be different, otherwise
+it could have index access violation.
+
+----preconditions:
+This function only relies on the shipment structure. The shipment structure should be valid.
+Therefore, For this function to work properly, readShipInfo() should be working properly and
+should be tested throughly.
